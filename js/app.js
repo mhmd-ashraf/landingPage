@@ -25,6 +25,7 @@
 const navMenu = document.getElementById('navbar__list');
 const sections = Array.from(document.querySelectorAll('section'));
 const topBtn = document.querySelector(".to-top");
+const linksNav = document.querySelectorAll("li a");
 
 /**
  * End Global Variables
@@ -46,34 +47,31 @@ function secViewPort(e) {
 
 // build the nav
 function buildNav() {
+    navMenu.innerHTML = "";
+    
     for (sec of sections) {
-        sectionName = sec.getAttribute('data-nav');
-        sectionId = sec.getAttribute('id');
-        listOfItems = document.createElement('li');
+        
+        const anitem =   `<li><a href='#${sec.getAttribute('id')}' class='menu__link'>${sec.dataset.nav}</a><li>`
 
-        listOfItems.innerHTML = `<a href='#${sectionId}' class='menu__link'>${sectionName}</a>`;
-        navMenu.appendChild(listOfItems);
+        navMenu.insertAdjacentHTML("beforeend", anitem);
     }
 }
 
 
 // Add class 'active' to section when near top of viewport
-function activeClass() {
-    for (sec of sections) {
-        if (secViewPort(sec)) {
-            
-            if (!sec.classList.contains('your-active-class')) {
-                sec.classList.add('your-active-class');
+
+function addActiveClass() {
+    window.addEventListener('scroll', () => {
+        for (sec of sections) {
+            if (secViewPort(sec)) {
+                (sec.classList.contains('your-active-class')) ? sec.classList.remove('your-active-class') : sec.classList.add('your-active-class');
+                
             }
         }
-        else {
-            sec.classList.remove('your-active-class');
-        }
-    }
+    });
 }
-function addActiveClass() {
-    document.addEventListener('scroll', activeClass);
-}
+
+
 
 
 
