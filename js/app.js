@@ -26,6 +26,7 @@ const navMenu = document.getElementById('navbar__list');
 const sections = Array.from(document.querySelectorAll('section'));
 const topBtn = document.querySelector(".to-top");
 const linksNav = document.querySelectorAll("li a");
+const menuLink = document.querySelectorAll('.menu__link');
 
 /**
  * End Global Variables
@@ -35,7 +36,7 @@ const linksNav = document.querySelectorAll("li a");
 function secViewPort(e) {
     let secPostion = e.getBoundingClientRect();
 
-    return (secPostion.top >= 0);
+    return (secPostion.top >= 0 && secPostion.top <= window.innerHeight && secPostion.top <= 300);
 }
 
 
@@ -63,12 +64,43 @@ function buildNav() {
 function addActiveClass() {
     window.addEventListener('scroll', () => {
         for (sec of sections) {
+
             if (secViewPort(sec)) {
-                (sec.classList.contains('your-active-class')) ? sec.classList.remove('your-active-class') : sec.classList.add('your-active-class');
+                
+                sec.classList.toggle('your-active-class');
+                
+                // const nnn = document.querySelector(sec.getAttribute('id'));
+                // nnn.classList.add('active');
+
+
+                // if (sec.classList.contains('your-active-class')) 
+                //     sec.classList.remove('your-active-class');
+
+                // else
+                //     sec.classList.add('your-active-class');
                 
             }
         }
     });
+    
+}
+
+
+function addActiveNav() {
+    const loc = location.href;
+    links = document.querySelectorAll(".navbar__menu ul a");
+    links.forEach(link => {
+        link.onclick = function () {
+            reset();
+            link.classList.add('active');
+        }
+    })
+
+    function reset() {
+        links.forEach(link => {
+            link.classList.remove('active');
+        })
+    }
 }
 
 
@@ -80,6 +112,7 @@ function scrollToSection() {
     let links = document.querySelectorAll('a[href^="#"]');
     links.forEach(anchor => {
         anchor.addEventListener('click', function (e) {
+
             e.preventDefault();
             document.querySelector(this.getAttribute("href")).scrollIntoView({
                 behavior: "smooth",
@@ -126,3 +159,5 @@ addActiveClass();
 
 // Scroll to top button
 toTop();
+
+addActiveNav();
